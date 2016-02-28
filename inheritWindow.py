@@ -7,10 +7,10 @@ class Window(QtGui.QMainWindow):
 	
 	def __init__(self):
 		super(Window,self).__init__()
-		self.setGeometry(50,50,1500,500)
+		self.setGeometry(50,50,1500,450)
 		self.setWindowTitle("Project Firenze")
-		self.setMinimumSize(1500, 500)
-		self.setMaximumSize(1500, 500)
+		self.setMinimumSize(1500, 450)
+		self.setMaximumSize(1500, 450)
 
 		self.setWindowIcon(QtGui.QIcon("Images/logo.png"))
 		palette = QtGui.QPalette()
@@ -26,23 +26,25 @@ class Window(QtGui.QMainWindow):
 
 		# Your Melody Labels
 		firstMelodyFile = QtGui.QPushButton("Attach Your Melody", self)
-		firstMelodyFile.clicked.connect(self.openFirstLyricFile)
+		firstMelodyFile.clicked.connect(self.openFirstMelodyFile)
 		firstMelodyFile.setStyleSheet("background: #5fa449; border-style: outset; border-radius: 6px; border-width: 2px; border-color: black; padding: 6px")
 		firstMelodyFile.resize(150,50)
 		firstMelodyFile.move(800,100)
 
 		self.firstMelodyLabel = QtGui.QLabel("Your Melody", self)
+		self.firstMelodyLabel.setStyleSheet("color: white")
 		self.firstMelodyLabel.setGeometry(800, 50, 500, 50)
 
 		# Other Melody Labels
 		secondMelodyFile = QtGui.QPushButton("Attach Other Melody", self)
-		secondMelodyFile.clicked.connect(self.openSecondLyricFile)
+		secondMelodyFile.clicked.connect(self.openSecondMelodyFile)
 		secondMelodyFile.setStyleSheet("background: #5fa449; border-style: outset; border-radius: 6px; border-width: 2px; border-color: black; padding: 6px")
 		secondMelodyFile.resize(150,50)
 		secondMelodyFile.move(800,300)
 
-		self.secondMelodyFileLabel = QtGui.QLabel("Other Melody", self)
-		self.secondMelodyFileLabel.setGeometry(800, 250, 500, 50)
+		self.secondMelodyLabel = QtGui.QLabel("Other Melody", self)
+		self.secondMelodyLabel.setStyleSheet("color: white")
+		self.secondMelodyLabel.setGeometry(800, 250, 500, 50)
 
 		# Compare Melody button
 		compareMelodies = QtGui.QPushButton("Compare Melody", self)
@@ -76,6 +78,7 @@ class Window(QtGui.QMainWindow):
 		firstFile.move(100,100)
 
 		self.firstLyricsLabel = QtGui.QLabel("Your Lyrics", self)
+		self.firstLyricsLabel.setStyleSheet("color: white")
 		self.firstLyricsLabel.setGeometry(100, 50, 500, 50)
 
 		# Other Lyrics Labels
@@ -86,6 +89,7 @@ class Window(QtGui.QMainWindow):
 		secondFile.move(100,300)
 
 		self.secondLyricsLabel = QtGui.QLabel("Other Lyrics", self)
+		self.secondLyricsLabel.setStyleSheet("color: white")
 		self.secondLyricsLabel.setGeometry(100, 250, 500, 50)
 
 		# Compare Lyrics button
@@ -118,6 +122,15 @@ class Window(QtGui.QMainWindow):
 	def openSecondLyricFile(self):
 		self.secondLyricName = QtGui.QFileDialog.getOpenFileName(self, 'Open File', "", "Text Files (*.txt)")
 		self.secondLyricsLabel.setText(self.secondLyricName)
+
+	def openFirstMelodyFile(self):
+		self.firstMelodyName = QtGui.QFileDialog.getOpenFileName(self, 'Open File', "", "Text Files (*.txt)")
+
+		self.firstMelodyLabel.setText(self.firstMelodyName)
+
+	def openSecondMelodyFile(self):
+		self.secondMelodyName = QtGui.QFileDialog.getOpenFileName(self, 'Open File', "", "Text Files (*.txt)")
+		self.secondMelodyLabel.setText(self.secondMelodyName)
 
 
 	def lyricCompare(self):
