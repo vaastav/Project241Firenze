@@ -7,10 +7,10 @@ class Window(QtGui.QMainWindow):
 	
 	def __init__(self):
 		super(Window,self).__init__()
-		self.setGeometry(50,50,800,500)
+		self.setGeometry(50,50,1500,500)
 		self.setWindowTitle("Project Firenze")
-		self.setMinimumSize(800, 500)
-		self.setMaximumSize(800, 500)
+		self.setMinimumSize(1500, 500)
+		self.setMaximumSize(1500, 500)
 
 		self.setWindowIcon(QtGui.QIcon("Images/logo.png"))
 		palette = QtGui.QPalette()
@@ -21,41 +21,87 @@ class Window(QtGui.QMainWindow):
 
 
 	def home(self):
-		# Your Song Labels
-		firstFile = QtGui.QPushButton("Attach Your Song", self)
-		firstFile.clicked.connect(self.openFirstFile)
+
+		# MELODY UI
+
+		# Your Melody Labels
+		firstMelodyFile = QtGui.QPushButton("Attach Your Melody", self)
+		firstMelodyFile.clicked.connect(self.openFirstLyricFile)
+		firstMelodyFile.setStyleSheet("background: #5fa449; border-style: outset; border-radius: 6px; border-width: 2px; border-color: black; padding: 6px")
+		firstMelodyFile.resize(150,50)
+		firstMelodyFile.move(800,100)
+
+		self.firstMelodyLabel = QtGui.QLabel("Your Melody", self)
+		self.firstMelodyLabel.setGeometry(800, 50, 500, 50)
+
+		# Other Melody Labels
+		secondMelodyFile = QtGui.QPushButton("Attach Other Melody", self)
+		secondMelodyFile.clicked.connect(self.openSecondLyricFile)
+		secondMelodyFile.setStyleSheet("background: #5fa449; border-style: outset; border-radius: 6px; border-width: 2px; border-color: black; padding: 6px")
+		secondMelodyFile.resize(150,50)
+		secondMelodyFile.move(800,300)
+
+		self.secondMelodyFileLabel = QtGui.QLabel("Other Melody", self)
+		self.secondMelodyFileLabel.setGeometry(800, 250, 500, 50)
+
+		# Compare Melody button
+		compareMelodies = QtGui.QPushButton("Compare Melody", self)
+		compareMelodies.clicked.connect(self.melodyCompare)
+		compareMelodies.setStyleSheet("background: #5fa449; border-style: outset; border-radius: 6px; border-width: 2px; border-color: black; padding: 6px")
+		compareMelodies.resize(150,50)
+		compareMelodies.move(975,200)
+
+		# Melody Progress bar
+		self.melodyProgress = QtGui.QProgressBar(self)
+		self.melodyProgress.setGeometry(945, 175, 250, 20)
+		self.melodyProgress.hide()
+
+		# Melody Similarity label
+		self.melodyScore = QtGui.QLabel("", self)
+		scoreFont = QtGui.QFont("Courier", 15, QtGui.QFont.Bold)
+		self.melodyScore.setStyleSheet("color: white")
+		self.melodyScore.setFont(scoreFont)
+		self.melodyScore.setGeometry(1250, 120, 200, 200)
+		self.melodyScore.setWordWrap(True)
+		self.melodyScore.setAlignment(QtCore.Qt.AlignCenter)
+
+
+		# LYRICS UI
+
+		# Your Lyrics Labels
+		firstFile = QtGui.QPushButton("Attach Your Lyrics", self)
+		firstFile.clicked.connect(self.openFirstLyricFile)
 		firstFile.setStyleSheet("background: #5fa449; border-style: outset; border-radius: 6px; border-width: 2px; border-color: black; padding: 6px")
 		firstFile.resize(150,50)
 		firstFile.move(100,100)
 
-		self.firstFileLabel = QtGui.QLabel("Your Song", self)
-		self.firstFileLabel.setGeometry(100, 50, 500, 50)
+		self.firstLyricsLabel = QtGui.QLabel("Your Lyrics", self)
+		self.firstLyricsLabel.setGeometry(100, 50, 500, 50)
 
-		# Other Song Labels
-		secondFile = QtGui.QPushButton("Attach Other Song", self)
-		secondFile.clicked.connect(self.openSecondFile)
+		# Other Lyrics Labels
+		secondFile = QtGui.QPushButton("Attach Other Lyrics", self)
+		secondFile.clicked.connect(self.openSecondLyricFile)
 		secondFile.setStyleSheet("background: #5fa449; border-style: outset; border-radius: 6px; border-width: 2px; border-color: black; padding: 6px")
 		secondFile.resize(150,50)
 		secondFile.move(100,300)
 
-		self.secondFileLabel = QtGui.QLabel("Other Song", self)
-		self.secondFileLabel.setGeometry(100, 250, 500, 50)
+		self.secondLyricsLabel = QtGui.QLabel("Other Lyrics", self)
+		self.secondLyricsLabel.setGeometry(100, 250, 500, 50)
 
-		# Compare songs button
-		compareSongs = QtGui.QPushButton("Compare Songs", self)
-		compareSongs.clicked.connect(self.download)
-		compareSongs.setStyleSheet("background: #5fa449; border-style: outset; border-radius: 6px; border-width: 2px; border-color: black; padding: 6px")
-		compareSongs.resize(150,50)
-		compareSongs.move(275,200)
+		# Compare Lyrics button
+		compareLyrics = QtGui.QPushButton("Compare Lyrics", self)
+		compareLyrics.clicked.connect(self.lyricCompare)
+		compareLyrics.setStyleSheet("background: #5fa449; border-style: outset; border-radius: 6px; border-width: 2px; border-color: black; padding: 6px")
+		compareLyrics.resize(150,50)
+		compareLyrics.move(275,200)
 
-		# Progress bar
+		# Lyrics Progress bar
 		self.progress = QtGui.QProgressBar(self)
 		self.progress.setGeometry(245, 175, 250, 20)
 		self.progress.hide()
 
-		# Similarity label
+		# Lyrics Similarity label
 		self.lyricsScore = QtGui.QLabel("", self)
-		scoreFont = QtGui.QFont("Courier", 15, QtGui.QFont.Bold)
 		self.lyricsScore.setStyleSheet("color: white")
 		self.lyricsScore.setFont(scoreFont)
 		self.lyricsScore.setGeometry(550, 120, 200, 200)
@@ -64,27 +110,41 @@ class Window(QtGui.QMainWindow):
 
 		self.show()
 
-	def openFirstFile(self):
-		self.firstFileName = QtGui.QFileDialog.getOpenFileName(self, 'Open File', "", "Text Files (*.txt)")
+	def openFirstLyricFile(self):
+		self.firstLyricName = QtGui.QFileDialog.getOpenFileName(self, 'Open File', "", "Text Files (*.txt)")
 
-		self.firstFileLabel.setText(self.firstFileName)
+		self.firstLyricsLabel.setText(self.firstLyricName)
 
-	def openSecondFile(self):
-		self.secondFileName = QtGui.QFileDialog.getOpenFileName(self, 'Open File', "", "Text Files (*.txt)")
-		self.secondFileLabel.setText(self.secondFileName)
+	def openSecondLyricFile(self):
+		self.secondLyricName = QtGui.QFileDialog.getOpenFileName(self, 'Open File', "", "Text Files (*.txt)")
+		self.secondLyricsLabel.setText(self.secondLyricName)
 
 
-	def download(self):
+	def lyricCompare(self):
 		self.progress.show()
-		lyricsCompareScore = str(lyricslib.compare(self.firstFileName, self.secondFileName))
+		lyricsCompareScore = str(lyricslib.compare(self.firstLyricName, self.secondLyricName))
 
 		self.completed = 0
 		while self.completed < 100:
-			self.completed+= 0.0001
+			self.completed+= 0.0005
 			self.progress.setValue(self.completed)
 		self.progress.hide()
 		trimmedLyricScore = lyricsCompareScore[:5] + "%"
 		self.lyricsScore.setText("These song lyrics are %s similar" %(trimmedLyricScore))
+
+	def melodyCompare(self):
+		self.melodyProgress.show()
+		melodyCompareScore = str(lyricslib.compare(self.firstLyricName, self.secondLyricName))
+
+		self.completed = 0
+		while self.completed < 100:
+			self.completed+= 0.0005
+			self.melodyProgress.setValue(self.completed)
+		self.melodyProgress.hide()
+		trimmedMelodyScore = melodyCompareScore[:5] + "%"
+		self.melodyScore.setText("These song melodies are %s similar" %(trimmedMelodyScore))
+
+
 
 def run():
 	app = QtGui.QApplication(sys.argv)
