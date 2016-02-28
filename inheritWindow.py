@@ -31,7 +31,7 @@ class Window(QtGui.QMainWindow):
 		firstMelodyFile.resize(150,50)
 		firstMelodyFile.move(800,100)
 
-		self.firstMelodyLabel = QtGui.QLabel("Your Melody", self)
+		self.firstMelodyLabel = QtGui.QLabel("", self)
 		self.firstMelodyLabel.setStyleSheet("color: white")
 		self.firstMelodyLabel.setGeometry(800, 50, 500, 50)
 
@@ -42,7 +42,7 @@ class Window(QtGui.QMainWindow):
 		secondMelodyFile.resize(150,50)
 		secondMelodyFile.move(800,300)
 
-		self.secondMelodyLabel = QtGui.QLabel("Other Melody", self)
+		self.secondMelodyLabel = QtGui.QLabel("", self)
 		self.secondMelodyLabel.setStyleSheet("color: white")
 		self.secondMelodyLabel.setGeometry(800, 250, 500, 50)
 
@@ -77,7 +77,7 @@ class Window(QtGui.QMainWindow):
 		firstFile.resize(150,50)
 		firstFile.move(100,100)
 
-		self.firstLyricsLabel = QtGui.QLabel("Your Lyrics", self)
+		self.firstLyricsLabel = QtGui.QLabel(self)
 		self.firstLyricsLabel.setStyleSheet("color: white")
 		self.firstLyricsLabel.setGeometry(100, 50, 500, 50)
 
@@ -88,7 +88,7 @@ class Window(QtGui.QMainWindow):
 		secondFile.resize(150,50)
 		secondFile.move(100,300)
 
-		self.secondLyricsLabel = QtGui.QLabel("Other Lyrics", self)
+		self.secondLyricsLabel = QtGui.QLabel(self)
 		self.secondLyricsLabel.setStyleSheet("color: white")
 		self.secondLyricsLabel.setGeometry(100, 250, 500, 50)
 
@@ -116,7 +116,6 @@ class Window(QtGui.QMainWindow):
 
 	def openFirstLyricFile(self):
 		self.firstLyricName = QtGui.QFileDialog.getOpenFileName(self, 'Open File', "", "Text Files (*.txt)")
-
 		self.firstLyricsLabel.setText(self.firstLyricName)
 
 	def openSecondLyricFile(self):
@@ -125,7 +124,6 @@ class Window(QtGui.QMainWindow):
 
 	def openFirstMelodyFile(self):
 		self.firstMelodyName = QtGui.QFileDialog.getOpenFileName(self, 'Open File', "", "Text Files (*.txt)")
-
 		self.firstMelodyLabel.setText(self.firstMelodyName)
 
 	def openSecondMelodyFile(self):
@@ -134,28 +132,33 @@ class Window(QtGui.QMainWindow):
 
 
 	def lyricCompare(self):
-		self.progress.show()
-		lyricsCompareScore = str(lyricslib.compare(self.firstLyricName, self.secondLyricName))
+		if self.firstLyricsLabel.text() != "" and self.secondLyricsLabel.text() != "":
+			self.progress.show()
+			lyricsCompareScore = str(lyricslib.compare(self.firstLyricName, self.secondLyricName))
 
-		self.completed = 0
-		while self.completed < 100:
-			self.completed+= 0.0005
-			self.progress.setValue(self.completed)
-		self.progress.hide()
-		trimmedLyricScore = lyricsCompareScore[:5] + "%"
-		self.lyricsScore.setText("These song lyrics are %s similar" %(trimmedLyricScore))
+			self.completed = 0
+			while self.completed < 100:
+				self.completed+= 0.0005
+				self.progress.setValue(self.completed)
+			self.progress.hide()
+			trimmedLyricScore = lyricsCompareScore[:5] + "%"
+			self.lyricsScore.setText("These song lyrics are %s similar" %(trimmedLyricScore))
+		else:
+			self.lyricsScore.setText("Please select two text files")
 
 	def melodyCompare(self):
-		self.melodyProgress.show()
-		melodyCompareScore = str(lyricslib.compare(self.firstLyricName, self.secondLyricName))
-
-		self.completed = 0
-		while self.completed < 100:
-			self.completed+= 0.0005
-			self.melodyProgress.setValue(self.completed)
-		self.melodyProgress.hide()
-		trimmedMelodyScore = melodyCompareScore[:5] + "%"
-		self.melodyScore.setText("These song melodies are %s similar" %(trimmedMelodyScore))
+		if self.firstMelodyLabel.text() != "" and self.secondMelodyLabel.text() != "":
+			self.melodyProgress.show()
+			melodyCompareScore = str(lyricslib.compare(self.firstMelodyName, self.secondMelodyName))
+			self.completed = 0
+			while self.completed < 100:
+				self.completed+= 0.0005
+				self.melodyProgress.setValue(self.completed)
+			self.melodyProgress.hide()
+			trimmedMelodyScore = melodyCompareScore[:5] + "%"
+			self.melodyScore.setText("These song melodies are %s similar" %(trimmedMelodyScore))
+		else:
+			self.melodyScore.setText("Please select two MIDI files")
 
 
 
