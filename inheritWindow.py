@@ -1,5 +1,6 @@
 import sys
 from PyQt4 import QtGui, QtCore
+import lyricslib
 
 class Window(QtGui.QMainWindow):
 
@@ -37,29 +38,27 @@ class Window(QtGui.QMainWindow):
 		self.progress = QtGui.QProgressBar(self)
 		self.progress.setGeometry(245, 175, 250, 20)
 
+		self.lyricsScore = QtGui.QLabel("Lyrics Score", self)
+		self.lyricsScore.setGeometry(550, 175, 250, 20)
+
 
 
 		self.show()
 
 	def openFirstFile(self):
-		# self.fileDialog = QtGui.QFileDialog(self)
-		# self.fileDialog.show()
+		self.firstFileName = QtGui.QFileDialog.getOpenFileName(self, 'Open File', "/Documents", "Text Files (*.txt)")
 
-		name = QtGui.QFileDialog.getOpenFileName(self, 'Open File')
-		print(name)
-		self.firstFileLabel.setText(name)
-
-		file = open(name, 'r')
+		self.firstFileLabel.setText(self.firstFileName)
 
 	def openSecondFile(self):
+		self.secondFileName = QtGui.QFileDialog.getOpenFileName(self, 'Open File')
+		self.secondFileLabel.setText(self.secondFileName)
 
-		name = QtGui.QFileDialog.getOpenFileName(self, 'Open File')
-		print(name)
-		self.secondFileLabel.setText(name)
-
-		file = open(name, 'r')
 
 	def download(self):
+		lyricsCompareScore = str(lyricslib.compare(self.firstFileName, self.secondFileName))
+		trimmedLyricScore = lyricsCompareScore[:5]
+		self.lyricsScore.setText(trimmedLyricScore)
 		self.completed = 0
 		while self.completed < 100:
 			self.completed+= 0.001
