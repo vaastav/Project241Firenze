@@ -5,7 +5,7 @@ import midi_reader
 import lengthnormalization
 import pitchnormalization
 import distance_metrics
-
+import os
 class Window(QtGui.QMainWindow):
 
 	
@@ -177,19 +177,19 @@ class Window(QtGui.QMainWindow):
 
 	def openFirstLyricFile(self):
 		self.firstLyricName = QtGui.QFileDialog.getOpenFileName(self, 'Open File', "", "Text Files (*.txt)")
-		self.firstLyricsLabel.setText(self.firstLyricName)
+		self.firstLyricsLabel.setText(os.path.basename(self.firstLyricName))
 
 	def openSecondLyricFile(self):
 		self.secondLyricName = QtGui.QFileDialog.getOpenFileName(self, 'Open File', "", "Text Files (*.txt)")
-		self.secondLyricsLabel.setText(self.secondLyricName)
+		self.secondLyricsLabel.setText(os.path.basename(self.secondLyricName))
 
 	def openFirstMelodyFile(self):
 		self.firstMelodyName = QtGui.QFileDialog.getOpenFileName(self, 'Open File', "", "MIDI Files (*.mid)")
-		self.firstMelodyLabel.setText(self.firstMelodyName)
+		self.firstMelodyLabel.setText(os.path.basename(self.firstMelodyName))
 
 	def openSecondMelodyFile(self):
 		self.secondMelodyName = QtGui.QFileDialog.getOpenFileName(self, 'Open File', "", "MIDI Files (*.mid)")
-		self.secondMelodyLabel.setText(self.secondMelodyName)
+		self.secondMelodyLabel.setText(os.path.basename(self.secondMelodyName))
 
 
 	def lyricCompare(self):
@@ -218,21 +218,23 @@ class Window(QtGui.QMainWindow):
 			firstLengthNormalized = lengthnormalization.normalize_length(firstMIDIRead, durationCoefficient)
 			secondLengthNormalized = lengthnormalization.normalize_length(secondMIDIRead, durationCoefficient)
 
-			firstZscoreNormalized = pitchnormalization.zscorenormalized(firstLengthNormalized)
-			secondZscoreNormalized = pitchnormalization.zscorenormalized(secondLengthNormalized)
+			firstZscoreNormalized = pitchnormalization.zscorenormalize(firstLengthNormalized)
+			secondZscoreNormalized = pitchnormalization.zscorenormalize(secondLengthNormalized)
 
-			conditionalDifference = str(distance_metrics.conditional_euclidean_distance(firstZscoreNormalized, secondZscoreNormalized))
+			conditionalDifference = distance_metrics.conditional_euclidean_distance(firstZscoreNormalized, secondZscoreNormalized)
 
-
-
-
+			conditionalPercentage = "Should be set"
+			if conditionalDifference == 0:
+				conditionalPercentage = "100.0"
+			else:
+				conditionalPercentage = str(1/conditionalDifference * 100) + "%"
 			self.completed = 0
 			while self.completed < 100:
 				self.completed+= 0.0005
 				self.melodyProgress.setValue(self.completed)
 			self.melodyProgress.hide()
-			#trimmedMelodyScore = melodyCompareScore[:5] + "%"
-			self.melodyScore.setText("Your song melody is %s similar to the other song's melody" %(conditionalDifference))
+			trimmedMelodyScore = conditionalPercentage[:5] + "%"
+			self.melodyScore.setText("Your song melody is %s similar to the other song's melody" %(trimmedMelodyScore))
 		else:
 			self.melodyScore.setText("Please select two MIDI files")
 
