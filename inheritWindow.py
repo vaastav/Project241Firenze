@@ -12,6 +12,7 @@ class Window(QtGui.QMainWindow):
 		windowHeight = 450
 		self.height = 50
 		self.btnWidth = 150
+		self.btnFormat = "background:  qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #88c9aa, stop:1 #7eb299); border-style: outset; border-radius: 5px; border-width: 2px; border-color: black; padding: 6px"
 
 		self.setGeometry(50,50,windowWidth,windowHeight)
 		self.setWindowTitle("Project Firenze")
@@ -54,53 +55,53 @@ class Window(QtGui.QMainWindow):
 		# Your Melody Button
 		firstMelodyFile = QtGui.QPushButton("Attach Your Melody", self)
 		firstMelodyFile.clicked.connect(self.openFirstMelodyFile)
-		firstMelodyFile.setStyleSheet("background: #5fa449; border-style: outset; border-radius: 5px; border-width: 2px; border-color: black; padding: 6px")
-		firstMelodyFile.setGeometry(xPosRight, yPosTop, self.btnWidth, self.height)
+		firstMelodyFile.setStyleSheet(self.btnFormat)
+		firstMelodyFile.setGeometry(xPosLeft, yPosTop, self.btnWidth, self.height)
 		firstMelodyFile.setFont(self.labelFont)
 
 		# Your Melody Label
 		self.firstMelodyLabel = QtGui.QLabel("", self)
 		self.firstMelodyLabel.setStyleSheet("color: white")
-		self.firstMelodyLabel.setGeometry(xPosRight, yPosTopLabel, labelWidth, self.height)
+		self.firstMelodyLabel.setGeometry(xPosLeft, yPosTopLabel, labelWidth, self.height)
 		self.firstMelodyLabel.setFont(self.labelFont)
 
 		# Other Melody Button
 		secondMelodyFile = QtGui.QPushButton("Attach Other Melody", self)
 		secondMelodyFile.clicked.connect(self.openSecondMelodyFile)
-		secondMelodyFile.setStyleSheet("background: #5fa449; border-style: outset; border-radius: 5px; border-width: 2px; border-color: black; padding: 6px")
-		secondMelodyFile.setGeometry(xPosRight, yPosBottom, self.btnWidth, self.height)
+		secondMelodyFile.setStyleSheet(self.btnFormat)
+		secondMelodyFile.setGeometry(xPosLeft, yPosBottom, self.btnWidth, self.height)
 		secondMelodyFile.setFont(self.labelFont)
 
 		# Other Melody Label
 		self.secondMelodyLabel = QtGui.QLabel("", self)
 		self.secondMelodyLabel.setStyleSheet("color: white")
-		self.secondMelodyLabel.setGeometry(xPosRight, yPosBottomLabel, labelWidth, self.height)
+		self.secondMelodyLabel.setGeometry(xPosLeft, yPosBottomLabel, labelWidth, self.height)
 		self.secondMelodyLabel.setFont(self.labelFont)
 
 		# Your Lyrics Button
 		firstFile = QtGui.QPushButton("Attach Your Lyrics", self)
 		firstFile.clicked.connect(self.openFirstLyricFile)
-		firstFile.setStyleSheet("background: #5fa449; border-style: outset; border-radius: 5px; border-width: 2px; border-color: black; padding: 6px")
-		firstFile.setGeometry(xPosLeft, yPosTop, self.btnWidth, self.height)
+		firstFile.setStyleSheet(self.btnFormat)
+		firstFile.setGeometry(xPosRight, yPosTop, self.btnWidth, self.height)
 		firstFile.setFont(self.labelFont)
 
 		# Your Lyrics Label
 		self.firstLyricsLabel = QtGui.QLabel(self)
 		self.firstLyricsLabel.setStyleSheet("color: white")
-		self.firstLyricsLabel.setGeometry(xPosLeft, yPosTopLabel, labelWidth, self.height)
+		self.firstLyricsLabel.setGeometry(xPosRight, yPosTopLabel, labelWidth, self.height)
 		self.firstLyricsLabel.setFont(self.labelFont)
 
 		# Other Lyrics Button
 		secondFile = QtGui.QPushButton("Attach Other Lyrics", self)
 		secondFile.clicked.connect(self.openSecondLyricFile)
-		secondFile.setStyleSheet("background: #5fa449; border-style: outset; border-radius: 5px; border-width: 2px; border-color: black; padding: 6px")
-		secondFile.setGeometry(xPosLeft, yPosBottom, self.btnWidth, self.height)
+		secondFile.setStyleSheet(self.btnFormat)
+		secondFile.setGeometry(xPosRight, yPosBottom, self.btnWidth, self.height)
 		secondFile.setFont(self.labelFont)
 
 		# Other Lyrics Label
 		self.secondLyricsLabel = QtGui.QLabel(self)
 		self.secondLyricsLabel.setStyleSheet("color: white")
-		self.secondLyricsLabel.setGeometry(xPosLeft, yPosBottomLabel, labelWidth, self.height)
+		self.secondLyricsLabel.setGeometry(xPosRight, yPosBottomLabel, labelWidth, self.height)
 		self.secondLyricsLabel.setFont(self.labelFont)
 
 	def setupCompareButtons(self):
@@ -112,15 +113,15 @@ class Window(QtGui.QMainWindow):
 		# Compare Melody button
 		compareMelodies = QtGui.QPushButton("Compare Melody", self)
 		compareMelodies.clicked.connect(self.melodyCompare)
-		compareMelodies.setStyleSheet("background: #5fa449; border-style: outset; border-radius: 5px; border-width: 2px; border-color: black; padding: 6px")
-		compareMelodies.setGeometry(xPosRight, yPos, self.btnWidth, self.height)
+		compareMelodies.setStyleSheet(self.btnFormat)
+		compareMelodies.setGeometry(xPosLeft, yPos, self.btnWidth, self.height)
 		compareMelodies.setFont(self.labelFont)
 
 		# Compare Lyrics button
 		compareLyrics = QtGui.QPushButton("Compare Lyrics", self)
 		compareLyrics.clicked.connect(self.lyricCompare)
-		compareLyrics.setStyleSheet("background: #5fa449; border-style: outset; border-radius: 5px; border-width: 2px; border-color: black; padding: 6px")
-		compareLyrics.setGeometry(xPosLeft, yPos, self.btnWidth, self.height)
+		compareLyrics.setStyleSheet(self.btnFormat)
+		compareLyrics.setGeometry(xPosRight, yPos, self.btnWidth, self.height)
 		compareLyrics.setFont(self.labelFont)
 
 	def setupProgressBars(self):
@@ -133,12 +134,12 @@ class Window(QtGui.QMainWindow):
 
 		# Melody Progress bar
 		self.melodyProgress = QtGui.QProgressBar(self)
-		self.melodyProgress.setGeometry(xPosRight, yPos, height, width)
+		self.melodyProgress.setGeometry(xPosLeft, yPos, height, width)
 		self.melodyProgress.hide()
 
 		# Lyrics Progress bar
 		self.progress = QtGui.QProgressBar(self)
-		self.progress.setGeometry(xPosLeft, yPos, height, width)
+		self.progress.setGeometry(xPosRight, yPos, height, width)
 		self.progress.hide()
 
 	def setupSimilarityLabelS(self):
@@ -154,7 +155,7 @@ class Window(QtGui.QMainWindow):
 		self.melodyScore = QtGui.QLabel("", self)
 		self.melodyScore.setStyleSheet("color: white")
 		self.melodyScore.setFont(self.scoreFont)
-		self.melodyScore.setGeometry(xPosRight, yPos, height, width)
+		self.melodyScore.setGeometry(xPosLeft, yPos, height, width)
 		self.melodyScore.setFont(self.scoreFont)
 		self.melodyScore.setWordWrap(True)
 		self.melodyScore.setAlignment(QtCore.Qt.AlignCenter)
@@ -163,7 +164,7 @@ class Window(QtGui.QMainWindow):
 		self.lyricsScore = QtGui.QLabel("", self)
 		self.lyricsScore.setStyleSheet("color: white")
 		self.lyricsScore.setFont(self.scoreFont)
-		self.lyricsScore.setGeometry(xPosLeft, yPos, height, width)
+		self.lyricsScore.setGeometry(xPosRight, yPos, height, width)
 		self.lyricsScore.setWordWrap(True)
 		self.lyricsScore.setAlignment(QtCore.Qt.AlignCenter)
 
