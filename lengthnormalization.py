@@ -14,7 +14,6 @@ def normalize_length(twodarray, coefficient_and_max_length):
         length += row[1]
     if length == coefficient_and_max_length[1]:
         coefficient = 1
-    print (coefficient_and_max_length[0])
     onedarray = np.array([])
     for row in twodarray:
         for i in range(row[1]*coefficient):
@@ -23,18 +22,20 @@ def normalize_length(twodarray, coefficient_and_max_length):
     if tempArrayLength < coefficient_and_max_length[1]:
         number_to_add = coefficient_and_max_length[1] - tempArrayLength
         if number_to_add % 2 == 0:
-            for i in range(number_to_add / 2):
+            for i in range(number_to_add // 2):
+
                 onedarray = np.insert(onedarray,0,onedarray[0])
                 onedarray = np.append(onedarray,onedarray[len(onedarray)-1])
         else:
             for i in range(number_to_add // 2):
+                print(onedarray)
                 onedarray = np.insert(onedarray,0,onedarray[0])
                 onedarray = np.append(onedarray,onedarray[len(onedarray)-1])
             onedarray = np.insert(onedarray,0,onedarray[0])
     elif tempArrayLength > coefficient_and_max_length[1]:
         number_to_remove = tempArrayLength - coefficient_and_max_length[1]
         if number_to_remove % 2 == 0:
-            for i in range(number_to_remove / 2):
+            for i in range(number_to_remove // 2):
                 onedarray = np.delete(onedarray, 0)
                 onedarray = np.delete(onedarray, len(onedarray)-1)
         else:
