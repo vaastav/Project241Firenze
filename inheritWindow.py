@@ -1,6 +1,10 @@
 import sys
 from PyQt4 import QtGui, QtCore
 import lyricslib
+import midi_reader
+import lengthnormalization
+import pitchnormalization
+import distance_metrics
 
 class Window(QtGui.QMainWindow):
 
@@ -180,11 +184,11 @@ class Window(QtGui.QMainWindow):
 		self.secondLyricsLabel.setText(self.secondLyricName)
 
 	def openFirstMelodyFile(self):
-		self.firstMelodyName = QtGui.QFileDialog.getOpenFileName(self, 'Open File', "", "Text Files (*.txt)")
+		self.firstMelodyName = QtGui.QFileDialog.getOpenFileName(self, 'Open File', "", "MIDI Files (*.mid)")
 		self.firstMelodyLabel.setText(self.firstMelodyName)
 
 	def openSecondMelodyFile(self):
-		self.secondMelodyName = QtGui.QFileDialog.getOpenFileName(self, 'Open File', "", "Text Files (*.txt)")
+		self.secondMelodyName = QtGui.QFileDialog.getOpenFileName(self, 'Open File', "", "MIDI Files (*.mid)")
 		self.secondMelodyLabel.setText(self.secondMelodyName)
 
 
@@ -206,14 +210,29 @@ class Window(QtGui.QMainWindow):
 	def melodyCompare(self):
 		if self.firstMelodyLabel.text() != "" and self.secondMelodyLabel.text() != "":
 			self.melodyProgress.show()
-			melodyCompareScore = str(lyricslib.compare(self.firstMelodyName, self.secondMelodyName))
+
+			firstMIDIRead = midi_reader.read_midi(self.firstMelodyName)
+			secondMIDIRead = midi_reader.read_midi(self.secondMelodyName)
+
+			durationCoefficient = lengthnormalization.get_coefficient(firstMIDIRead,secondMIDIRead)
+			firstLengthNormalized = lengthnormalization.normalize_length(firstMIDIRead, durationCoefficient)
+			secondLengthNormalized = lengthnormalization.normalize_length(secondMIDIRead, durationCoefficient)
+
+			firstZscoreNormalized = pitchnormalization.zscorenormalized(firstLengthNormalized)
+			secondZscoreNormalized = pitchnormalization.zscorenormalized(secondLengthNormalized)
+
+			conditionalDifference = str(distance_metrics.conditional_euclidean_distance(firstZscoreNormalized, secondZscoreNormalized))
+
+
+
+
 			self.completed = 0
 			while self.completed < 100:
 				self.completed+= 0.0005
 				self.melodyProgress.setValue(self.completed)
 			self.melodyProgress.hide()
-			trimmedMelodyScore = melodyCompareScore[:5] + "%"
-			self.melodyScore.setText("Your song melody is %s similar to the other song's melody" %(trimmedMelodyScore))
+			#trimmedMelodyScore = melodyCompareScore[:5] + "%"
+			self.melodyScore.setText("Your song melody is %s similar to the other song's melody" %(conditionalDifference))
 		else:
 			self.melodyScore.setText("Please select two MIDI files")
 
