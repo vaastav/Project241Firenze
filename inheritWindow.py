@@ -7,13 +7,16 @@ class Window(QtGui.QMainWindow):
 	
 	def __init__(self):
 		super(Window,self).__init__()
-		self.setGeometry(50,50,900,500)
+		self.setGeometry(50,50,800,500)
 		self.setWindowTitle("Project Firenze")
-		self.setWindowIcon(QtGui.QIcon("Images/logo.png"))
+		self.setMinimumSize(800, 500)
+		self.setMaximumSize(800, 500)
 
+		self.setWindowIcon(QtGui.QIcon("Images/logo.png"))
 		palette = QtGui.QPalette()
 		palette.setBrush(QtGui.QPalette.Background,QtGui.QBrush(QtGui.QPixmap("Images/background.png")))
 		self.setPalette(palette)
+
 		self.home()
 
 
@@ -53,11 +56,11 @@ class Window(QtGui.QMainWindow):
 		# Similarity label
 		self.lyricsScore = QtGui.QLabel("", self)
 		scoreFont = QtGui.QFont("Courier", 15, QtGui.QFont.Bold)
+		self.lyricsScore.setStyleSheet("color: white")
 		self.lyricsScore.setFont(scoreFont)
 		self.lyricsScore.setGeometry(550, 120, 200, 200)
 		self.lyricsScore.setWordWrap(True)
 		self.lyricsScore.setAlignment(QtCore.Qt.AlignCenter)
-
 
 		self.show()
 
