@@ -226,8 +226,13 @@ class Window(QtGui.QMainWindow):
 			conditionalPercentage = "Should be set"
 			if conditionalDifference == 0:
 				conditionalPercentage = "100.0"
+			elif conditionalDifference < 100:
+				conditionalPercentage = str(1/(conditionalDifference/7) * 100) + "%"
+			elif conditionalDifference < 200:
+				conditionalPercentage = str(1/(conditionalDifference/6) * 100) + "%"
 			else:
-				conditionalPercentage = str(1/conditionalDifference * 100) + "%"
+				conditionalPercentage = str(1/(conditionalDifference/100) * 100) + "%"
+			print(conditionalDifference)
 			self.completed = 0
 			while self.completed < 100:
 				self.completed+= 0.0005
